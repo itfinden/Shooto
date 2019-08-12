@@ -28,7 +28,7 @@ echo "Este script instala y pre-configura cPanel (CTRL + C para cancelar)"
 sleep 10
 
 echo "####### CONFIGURANDO CENTOS #######"
-wget https://raw.githubusercontent.com/wnpower/Linux-Config/master/configure_centos.sh -O "$CWD/configure_centos.sh" && bash "$CWD/configure_centos.sh"
+wget https://raw.githubusercontent.com/itfinden/Shooto/master/configure_centos.sh -O "$CWD/configure_centos.sh" && bash "$CWD/configure_centos.sh"
 
 echo "####### PRE-CONFIGURACION CPANEL ##########"
 echo "Desactivando yum-cron..."
@@ -58,11 +58,10 @@ echo "options timeout:5 attempts:2" > /etc/resolv.conf
 echo "nameserver 127.0.0.1" >> /etc/resolv.conf # local
 echo "nameserver 208.67.222.222" >> /etc/resolv.conf # OpenDNS
 echo "nameserver 8.20.247.20" >> /etc/resolv.conf # Comodo
-echo "nameserver 8.8.8.8" >> /etc/resolv.conf # Google
+echo "nameserver 9.9.9.9" >> /etc/resolv.conf # QuadNine
 echo "nameserver 199.85.126.10" >> /etc/resolv.conf # Norton
 echo "nameserver 8.26.56.26" >> /etc/resolv.conf # Comodo
 echo "nameserver 209.244.0.3" >> /etc/resolv.conf # Level3
-echo "nameserver 8.8.4.4" >> /etc/resolv.conf # Google
 echo "######### FIN CONFIGURANDO DNS Y RED ########"
 
 echo "Cambiando runlevel a 3..."
@@ -449,10 +448,10 @@ echo "Configurando hora del servidor..."
 yum install ntpdate -y
 echo "Sincronizando fecha con pool.ntp.org..."
 ntpdate 0.pool.ntp.org 1.pool.ntp.org 2.pool.ntp.org 3.pool.ntp.org 0.south-america.pool.ntp.org
-if [ -f /usr/share/zoneinfo/America/Buenos_Aires ]; then
+if [ -f /usr/share/zoneinfo/America/Santiago ]; then
         echo "Seteando timezone a America/Buenos_Aires..."
         mv /etc/localtime /etc/localtime.old
-        ln -s /usr/share/zoneinfo/America/Buenos_Aires /etc/localtime
+        ln -s /usr/share/zoneinfo/America/Santiago /etc/localtime
 fi
 echo "Seteando fecha del BIOS..."
 hwclock -r
@@ -513,4 +512,4 @@ done
 history -c
 echo "" > /root/.bash_history
 
-echo "#### ¡Terminado!. Si vas a reiniciar hacelo en 10 minutos porque puede estar actualizando MySQL ####"
+echo "#### ¡Terminado!. Si vas a reiniciar hazlo en 10 minutos porque puede estar actualizando MySQL ####"
