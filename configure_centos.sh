@@ -34,7 +34,7 @@ done
 echo "Reescribiendo /etc/resolv.conf..."
 
 echo "nameserver 9.9.9.9" > /etc/resolv.conf # QuadNine
-echo "nameserver 8.8.8.8" >> /etc/resolv.conf # Google
+echo "nameserver 149.112.112.112" >> /etc/resolv.conf # Google
 
 
 echo "Configurando SSH..."
