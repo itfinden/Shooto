@@ -2,7 +2,7 @@
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 CWD="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-SSH_PORT=2022
+SSH_PORT=7432
 
 if [ ! -f /etc/redhat-release ]; then
 	echo "CentOS no detectado, abortando."
@@ -26,15 +26,15 @@ do
 	sed -i '/^DNS2=.*/d' $ETHCFG
 	
 	echo "PEERDNS=no" >> $ETHCFG
-	echo "DNS1=8.8.8.8" >> $ETHCFG
-	echo "DNS2=8.8.4.4" >> $ETHCFG
+	echo "DNS1=9.9.9.9" >> $ETHCFG
+	echo "DNS2=8.8.8.8" >> $ETHCFG
 
 done
 
 echo "Reescribiendo /etc/resolv.conf..."
 
-echo "nameserver 8.8.8.8" > /etc/resolv.conf # Google
-echo "nameserver 8.8.4.4" >> /etc/resolv.conf # Google
+echo "nameserver 9.9.9.9" > /etc/resolv.conf # QuadNine
+echo "nameserver 8.8.8.8" >> /etc/resolv.conf # Google
 
 
 echo "Configurando SSH..."
@@ -58,7 +58,7 @@ service sshd restart
 
 # SI TIENE SOLO IPTABLES
 if [ -f /etc/sysconfig/iptables ]; then
-	sed -i 's/dport 22 /dport 2022 /' /etc/sysconfig/iptables
+	sed -i 's/dport 22 /dport $SSH_PORT /' /etc/sysconfig/iptables
 	service iptables restart 2>/dev/null
 fi
 
@@ -67,8 +67,8 @@ if systemctl is-enabled firewalld | grep "^enabled$" > /dev/null; then
 	if systemctl is-active firewalld | grep "^inactive$" > /dev/null; then
 		service firewalld restart
 	fi
-	firewall-cmd --permanent --add-port=2022/tcp > /dev/null
-	firewall-offline-cmd --add-port=2022/tcp > /dev/null
+	firewall-cmd --permanent --add-port=$SSH_PORT/tcp > /dev/null
+	firewall-offline-cmd --add-port=$SSH_PORT/tcp > /dev/null
 	firewall-cmd --reload 
 fi
 
@@ -95,10 +95,10 @@ done
 
 echo "Sincronizando fecha con pool.ntp.org..."
 ntpdate 0.pool.ntp.org 1.pool.ntp.org 2.pool.ntp.org 3.pool.ntp.org 0.south-america.pool.ntp.org
-if [ -f /usr/share/zoneinfo/America/Buenos_Aires ]; then
+if [ -f /usr/share/zoneinfo/America/Santiago ]; then
         echo "Seteando timezone a America/Buenos_Aires..."
         mv /etc/localtime /etc/localtime.old
-        ln -s /usr/share/zoneinfo/America/Buenos_Aires /etc/localtime
+        ln -s /usr/share/zoneinfo/America/Santiago /etc/localtime
 fi
 
 echo "Seteando fecha del BIOS..."
