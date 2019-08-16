@@ -94,9 +94,9 @@ for DEVFULL in /dev/sg? /dev/sd?; do
 done
 
 echo "Sincronizando fecha con pool.ntp.org..."
-ntpdate 0.pool.ntp.org 1.pool.ntp.org 2.pool.ntp.org 3.pool.ntp.org 0.south-america.pool.ntp.org
+ntpdate ntp.shoa.cl
 if [ -f /usr/share/zoneinfo/America/Santiago ]; then
-        echo "Seteando timezone a America/Buenos_Aires..."
+        echo "Seteando timezone a America/Santiago..."
         mv /etc/localtime /etc/localtime.old
         ln -s /usr/share/zoneinfo/America/Santiago /etc/localtime
 fi
