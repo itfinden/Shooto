@@ -93,7 +93,7 @@ for DEVFULL in /dev/sg? /dev/sd?; do
         fi
 done
 
-echo "Sincronizando fecha con pool.ntp.org..."
+echo "Sincronizando fecha con ntp.shoa.cl..."
 ntpdate ntp.shoa.cl
 if [ -f /usr/share/zoneinfo/America/Santiago ]; then
         echo "Seteando timezone a America/Santiago..."
